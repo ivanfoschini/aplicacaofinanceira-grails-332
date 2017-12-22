@@ -1,0 +1,24 @@
+import java.util.Date
+import org.springframework.validation.*
+
+/**
+ * Renders validation errors according to vnd.error: https://github.com/blongden/vnd.error
+ */
+model {
+    Errors errors
+}
+
+response.status UNPROCESSABLE_ENTITY
+
+json {
+    Errors errorsObject = (Errors) this.errors
+    def allErrors = errorsObject.allErrors
+
+    timestamp new Date().getTime()
+    status 422
+    error 'Unprocessable Entity'
+    errors(allErrors) { ObjectError error ->
+        message messageSource.getMessage(error, locale)
+    }
+    path request.uri
+}
