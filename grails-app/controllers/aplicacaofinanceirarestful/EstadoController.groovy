@@ -19,6 +19,11 @@ class EstadoController {
             return
         }
 
+        if (!estadoService.verifyDeletion(estado)) {
+            render message: messageSource.getMessage('aplicacaofinanceirarestful.Estado.has.cidades', null, null), status: HttpStatus.CONFLICT
+            return
+        }
+
         estado.delete(flush: true)
         render status: HttpStatus.NO_CONTENT
     }
