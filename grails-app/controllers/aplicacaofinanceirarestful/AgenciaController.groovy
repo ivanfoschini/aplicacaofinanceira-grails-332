@@ -23,6 +23,11 @@ class AgenciaController {
             return
         }
 
+        if (!agenciaService.verifyDeletion(agencia)) {
+            render message: messageSource.getMessage('aplicacaofinanceirarestful.Agencia.has.contas', null, null), status: HttpStatus.CONFLICT
+            return
+        }
+
         agencia.endereco.delete()
         agencia.delete(flush: true)
         render status: HttpStatus.NO_CONTENT
