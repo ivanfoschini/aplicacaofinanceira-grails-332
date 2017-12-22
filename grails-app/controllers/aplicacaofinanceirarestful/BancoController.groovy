@@ -19,6 +19,11 @@ class BancoController {
             return
         }
 
+        if (!bancoService.verifyDeletion(banco)) {
+            render message: messageSource.getMessage('aplicacaofinanceirarestful.Banco.has.agencias', null, null), status: HttpStatus.CONFLICT
+            return
+        }
+
         banco.delete(flush: true)
         render status: HttpStatus.NO_CONTENT
     }

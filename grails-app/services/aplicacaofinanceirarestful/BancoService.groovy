@@ -1,6 +1,7 @@
 package aplicacaofinanceirarestful
 
 import grails.transaction.Transactional
+import org.grails.web.json.JSONObject
 
 @Transactional
 class BancoService {
@@ -11,5 +12,25 @@ class BancoService {
 
     def findById(Long id) {
         return Banco.get(id)
+    }
+
+    def validateBanco(jsonObject) {
+        JSONObject jsonBancoObject = jsonObject.get("banco")
+
+        Banco banco = Banco.get(jsonBancoObject.get("id"))
+
+        if (!banco) {
+            return false
+        }
+
+        return true
+    }
+
+    def verifyDeletion(Banco banco) {
+        if (!banco.agencias?.isEmpty()) {
+            return false
+        }
+
+        return true
     }
 }
